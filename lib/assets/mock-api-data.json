@@ -4,7 +4,7 @@
       "id": "evt_001",
       "title": "Vente Flash - Mode Été 2024",
       "description": "Découvrez notre collection été avec des réductions exceptionnelles !",
-      "startTime": "2026-02-07T13:45:00Z",
+      "startTime": "2026-02-07T10:45:00Z",
       "endTime": "2026-02-07T15:45:00Z",
       "status": "live",
       "seller": {
@@ -20,7 +20,7 @@
       ],
       "featuredProduct": "prod_001",
       "viewerCount": 245,
-      "streamUrl": "https://example.com/streams/evt_001.m3u8",
+      "streamUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
       "replayUrl": null,
       "thumbnailUrl": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800"
     },
@@ -43,7 +43,7 @@
       ],
       "featuredProduct": null,
       "viewerCount": 0,
-      "streamUrl": null,
+      "streamUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
       "replayUrl": null,
       "thumbnailUrl": "https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=800"
     },
@@ -301,6 +301,30 @@
       "name": "Claire Bernard",
       "avatar": "https://i.pravatar.cc/150?img=7",
       "createdAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "seller_001",
+      "email": "marie@example.com",
+      "name": "Marie Dupont",
+      "storeName": "Fashion Store",
+      "avatar": "https://i.pravatar.cc/150?img=1",
+      "createdAt": "2023-10-01T00:00:00Z"
+    },
+    {
+      "id": "seller_002",
+      "email": "sophie.m@example.com",
+      "name": "Sophie Martin",
+      "storeName": "Beauty Corner",
+      "avatar": "https://i.pravatar.cc/150?img=2",
+      "createdAt": "2023-09-15T00:00:00Z"
+    },
+    {
+      "id": "seller_003",
+      "email": "jean.dubois@example.co",
+      "name": "Jean Dubois",
+      "storeName": "Tech Store",
+      "avatar": "https://i.pravatar.cc/150?img=3",
+        "createdAt": "2023-08-20T00:00:00Z"
     }
   ],
   "orders": [
