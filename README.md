@@ -134,6 +134,7 @@ Packages:
 - UX LiveEvent: compteur viewers uniquement en live, debounce + easeInOutCubic, formatage milliers, icône store avec pulse/fade, repositionnée sous le lecteur
 - Architecture: usecases dédiés (live-only, scheduled-only, ended-recently), extraction `_LiveInfoBar`
 - Tests: élargir la couverture (repos, blocs, widgets responsive)
+- Design: amélioration de l’esthétique (typographie, couleurs, animations), meilleure indication de l’état (live/scheduled/ended), UI checkout plus fluide
 - Accessibilité: navigation clavier, alt texts
 
 ---
@@ -147,17 +148,8 @@ Packages:
    - Choix techniques (état management, packages, etc.)
    - Difficultés rencontrées
    - Améliorations possibles
-3. Screenshots/Vidéo de l’application en fonctionnement (à ajouter)
-4. Documentation des APIs mock (à compléter au besoin)
-5. Tests unitaires et widgets (bonus apprécié)
-
-## Instructions de soumission
-
-1. Copier `mock-api-data.json` dans `lib/assets/` et s’assurer de l’entrée dans `pubspec.yaml`
-2. Créer un repository Git (GitHub/GitLab)
-3. Commiter avec des messages clairs et un `.gitignore` adapté
-4. Envoyer le lien du repository + ce README détaillé
-5. Temps estimé: 7h30 (répartissable)
+3. Screenshots/Vidéo de l’application en fonctionnement
+4. Tests unitaires et widgets
 
 Ressources utiles:
 - Flutter Web: https://docs.flutter.dev/platform-integration/web
