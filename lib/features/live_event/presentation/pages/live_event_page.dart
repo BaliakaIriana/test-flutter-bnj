@@ -10,6 +10,8 @@ import 'package:test_flutter_bnj/features/live_event/presentation/widgets/video_
 import 'package:test_flutter_bnj/features/live_event/presentation/widgets/live_info_bar.dart';
 import 'package:test_flutter_bnj/injection.dart';
 import 'package:test_flutter_bnj/widgets/common/error_view.dart';
+import 'package:test_flutter_bnj/features/cart/presentation/bloc/cart_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class LiveEventPage extends StatefulWidget {
   final String eventId;
@@ -36,22 +38,35 @@ class _LiveEventPageState extends State<LiveEventPage>
       create: (context) =>
           getIt<LiveEventBloc>()..add(LoadLiveEventById(widget.eventId)),
       child: Scaffold(
-        appBar: AppBar(title: Text('Live Flow'), centerTitle: false,
-        actions: [
-          // cart button with badge
-          IconButton(
-            icon: const Icon(LucideIcons.shoppingCart),
-            onPressed: () {
-
-            }),
-          // profile button
-          IconButton(
-            icon: const Icon(LucideIcons.user),
-            onPressed: () {
-
-            }
-          )
-        ],),
+        appBar: AppBar(
+          title: const Text('Live Flow'),
+          centerTitle: false,
+          automaticallyImplyLeading: true,
+          leading: BackButton(onPressed: () => context.pop()),
+          actions: [
+            IconButton(
+              icon: BlocBuilder<CartBloc, CartState>(
+                builder: (context, state) {
+                  final hasItems = state.items.isNotEmpty;
+                  if (hasItems) {
+                    return Badge.count(
+                      count: state.items.length,
+                      child: Icon(LucideIcons.shoppingCart),
+                    );
+                  }
+                  return Icon(LucideIcons.shoppingCart);
+                },
+              ),
+              onPressed: () => context.push('/cart'),
+              tooltip: 'Panier',
+            ),
+            IconButton(
+              icon: const Icon(LucideIcons.user),
+              onPressed: () {},
+              tooltip: 'Profil',
+            ),
+          ],
+        ),
         body: BlocBuilder<LiveEventBloc, LiveEventState>(
           builder: (context, state) {
             final isLoading = state is LiveEventLoading;
@@ -135,11 +150,16 @@ class DesktopLiveEventLayout extends StatelessWidget {
                       child: isScheduled
                           ? _UpcomingBanner(theme: theme)
                           : RepaintBoundary(
-                              child: VideoPlayerWidget(streamUrl: event.streamUrl),
+                              child: VideoPlayerWidget(
+                                streamUrl: event.streamUrl,
+                              ),
                             ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 8,
+                      ),
                       child: Row(
                         children: [
                           const Icon(LucideIcons.store, size: 18),
@@ -147,7 +167,8 @@ class DesktopLiveEventLayout extends StatelessWidget {
                           Expanded(
                             child: Text(
                               event.seller.name,
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(fontWeight: FontWeight.w600),
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -209,7 +230,9 @@ class MobileLiveEventLayout extends StatelessWidget {
               Expanded(
                 child: Text(
                   event.seller.name,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
@@ -248,13 +271,18 @@ class MobileLiveEventLayout extends StatelessWidget {
 
 class _UpcomingBanner extends StatelessWidget {
   final ThemeData theme;
+
   const _UpcomingBanner({required this.theme});
+
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [theme.colorScheme.primary.withValues(alpha: 0.08), Colors.transparent],
+          colors: [
+            theme.colorScheme.primary.withValues(alpha: 0.08),
+            Colors.transparent,
+          ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -265,7 +293,9 @@ class _UpcomingBanner extends StatelessWidget {
           decoration: BoxDecoration(
             color: theme.colorScheme.primary.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: theme.colorScheme.primary.withValues(alpha: 0.2)),
+            border: Border.all(
+              color: theme.colorScheme.primary.withValues(alpha: 0.2),
+            ),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,

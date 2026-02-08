@@ -19,6 +19,12 @@ import 'package:test_flutter_bnj/features/auth/domain/repositories/user_reposito
     as _i56;
 import 'package:test_flutter_bnj/features/auth/presentation/bloc/auth_bloc.dart'
     as _i923;
+import 'package:test_flutter_bnj/features/cart/data/repositories/cart_repository_impl.dart'
+    as _i475;
+import 'package:test_flutter_bnj/features/cart/domain/repositories/cart_repository.dart'
+    as _i262;
+import 'package:test_flutter_bnj/features/cart/presentation/bloc/cart_bloc.dart'
+    as _i714;
 import 'package:test_flutter_bnj/features/home/presentation/cubit/recently_ended_lives_cubit.dart'
     as _i529;
 import 'package:test_flutter_bnj/features/home/presentation/cubit/upcoming_events_cubit.dart'
@@ -58,6 +64,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i422.UserRemoteDataSource>(
       () => _i422.UserRemoteDataSourceImpl(),
     );
+    gh.lazySingleton<_i262.CartRepository>(() => _i475.CartRepositoryImpl());
     gh.lazySingleton<_i456.ChatRepository>(
       () => _i355.ChatRepositoryImpl(
         remoteDataSource: gh<_i1053.LiveEventRemoteDataSource>(),
@@ -77,6 +84,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i56.UserRepository>(),
         gh<_i456.ChatRepository>(),
       ),
+    );
+    gh.factory<_i714.CartBloc>(
+      () => _i714.CartBloc(gh<_i262.CartRepository>()),
     );
     gh.factory<_i611.GetLiveEvents>(
       () => _i611.GetLiveEvents(gh<_i1020.LiveEventRepository>()),

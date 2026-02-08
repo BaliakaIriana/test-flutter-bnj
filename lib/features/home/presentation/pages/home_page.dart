@@ -4,10 +4,12 @@ import 'package:gap/gap.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:test_flutter_bnj/core/utils/responsive.dart';
 import 'package:test_flutter_bnj/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:test_flutter_bnj/features/cart/presentation/bloc/cart_bloc.dart';
 import 'package:test_flutter_bnj/features/home/presentation/widgets/home_page_live_now_carousel.dart';
 import 'package:test_flutter_bnj/features/home/presentation/widgets/home_page_recently_ended_lives.dart';
 import 'package:test_flutter_bnj/features/home/presentation/widgets/home_page_upcoming_lives.dart';
 import 'package:test_flutter_bnj/core/widgets/page_container.dart';
+import 'package:go_router/go_router.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -18,15 +20,22 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Live Flow'),
         actions: [
-          IconButton(
-              icon: const Icon(LucideIcons.search),
-              onPressed: () {}),
-          IconButton(
-              icon: const Icon(LucideIcons.shoppingCart),
-              onPressed: () {}),
-          IconButton(
-              icon: const Icon(LucideIcons.user),
-              onPressed: () {}),
+          IconButton(icon: const Icon(LucideIcons.search), onPressed: () {}),
+          BlocBuilder<CartBloc, CartState>(
+            builder: (context, cartState) {
+              final qty = cartState.items.length;
+              return Badge.count(
+                count: qty,
+                isLabelVisible: qty > 0,
+                child: IconButton(
+                  icon: const Icon(LucideIcons.shoppingCart),
+                  onPressed: () => context.push('/cart'),
+                  tooltip: 'Panier',
+                ),
+              );
+            },
+          ),
+          IconButton(icon: const Icon(LucideIcons.user), onPressed: () {}),
         ],
       ),
       body: SafeArea(

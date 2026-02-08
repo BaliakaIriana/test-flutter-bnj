@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:test_flutter_bnj/core/utils/extensions.dart';
+import 'package:test_flutter_bnj/features/cart/domain/entities/cart_item.dart';
+import 'package:test_flutter_bnj/features/cart/presentation/bloc/cart_bloc.dart';
 import 'package:test_flutter_bnj/features/live_event/domain/entities/product.dart';
 import 'package:test_flutter_bnj/widgets/common/app_button.dart';
 
@@ -37,7 +40,8 @@ class ProductGridWidget extends StatelessWidget {
           ),
           itemCount: products.length,
           itemBuilder: (context, index) {
-            return _ProductCard(product: products[index]);
+            final product = products[index];
+            return ProductCard(product: product);
           },
         );
       },
@@ -45,10 +49,10 @@ class ProductGridWidget extends StatelessWidget {
   }
 }
 
-class _ProductCard extends StatelessWidget {
+class ProductCard extends StatelessWidget {
   final Product product;
 
-  const _ProductCard({required this.product});
+  const ProductCard({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
@@ -94,6 +98,22 @@ class _ProductCard extends StatelessWidget {
                           fontSize: 10,
                           fontWeight: FontWeight.bold,
                         ),
+                      ),
+                    ),
+                  ),
+                if (product.stock <= 0)
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: 0.6),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: const Text(
+                        'Rupture',
+                        style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
@@ -185,7 +205,28 @@ class _ProductCard extends StatelessWidget {
               child: SizedBox(
                 width: double.infinity,
                 child: AppButton(
-                  onPressed: product.stock > 0 ? () {} : null,
+                  onPressed: product.stock > 0 ? () {
+                    final item = CartItem(
+                      productId: product.id,
+                      name: product.name,
+                      price: product.price,
+                      thumbnail: product.thumbnail,
+                    );
+                    context.read<CartBloc>().add(CartAdd(item));
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('${product.name} ajouté au panier'),
+                        action: SnackBarAction(
+                          label: 'Annuler',
+                          onPressed: () {
+                            context.read<CartBloc>().add(CartRemove(product.id));
+                          },
+                        ),
+                        duration: const Duration(seconds: 2),
+                      ),
+                    );
+                  } : null,
                   label: product.stock > 0 ? 'Ajouter' : 'Rupture',
                 ),
               ),

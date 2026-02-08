@@ -16,10 +16,13 @@ import 'package:test_flutter_bnj/features/live_event/domain/repositories/live_ev
 import 'package:test_flutter_bnj/features/auth/domain/repositories/user_repository.dart';
 import 'package:test_flutter_bnj/features/live_event/domain/repositories/chat_repository.dart';
 import 'package:test_flutter_bnj/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:test_flutter_bnj/features/cart/presentation/bloc/cart_bloc.dart';
 
 class MockLiveEventBloc extends Mock implements LiveEventBloc {}
 
 class MockAuthBloc extends Mock implements AuthBloc {}
+
+class MockCartBloc extends Mock implements CartBloc {}
 
 class _FakeMockSocketService implements MockSocketService {
   // Minimal stubs
@@ -59,8 +62,10 @@ void main() {
     testWidgets('shows VideoPlayerWidget when status is live', (tester) async {
       final mockBloc = MockLiveEventBloc();
       final mockAuth = MockAuthBloc();
+      final mockCart = MockCartBloc();
       when(() => mockBloc.close()).thenAnswer((_) async {});
       when(() => mockAuth.close()).thenAnswer((_) async {});
+      when(() => mockCart.close()).thenAnswer((_) async {});
       when(() => mockAuth.state).thenReturn(Authenticated( User(
         id: 'u1',
         email: 'test@example.com',
@@ -75,6 +80,9 @@ void main() {
         avatar: '',
         createdAt: DateTime(2024,1,1),
       ))));
+      when(() => mockCart.state).thenReturn(const CartState(items: []));
+      when(() => mockCart.stream).thenAnswer((_) => Stream<CartState>.value(const CartState(items: [])));
+
 
       // Register fake socket service
       if (getIt.isRegistered<MockSocketService>()) {
@@ -104,8 +112,11 @@ void main() {
 
       await tester.pumpWidget(
         MaterialApp(
-          home: BlocProvider<AuthBloc>.value(
-            value: mockAuth,
+          home: MultiBlocProvider(
+            providers: [
+              BlocProvider<AuthBloc>.value(value: mockAuth),
+              BlocProvider<CartBloc>.value(value: mockCart),
+            ],
             child: LiveEventPage(eventId: 'evt_live'),
           ),
         ),
@@ -120,8 +131,10 @@ void main() {
     testWidgets('shows Upcoming banner text when status is scheduled', (tester) async {
       final mockBloc = MockLiveEventBloc();
       final mockAuth = MockAuthBloc();
+      final mockCart = MockCartBloc();
       when(() => mockBloc.close()).thenAnswer((_) async {});
       when(() => mockAuth.close()).thenAnswer((_) async {});
+      when(() => mockCart.close()).thenAnswer((_) async {});
       when(() => mockAuth.state).thenReturn(Authenticated( User(
         id: 'u1',
         email: 'test@example.com',
@@ -136,6 +149,9 @@ void main() {
         avatar: '',
         createdAt: DateTime(2024,1,1),
       ))));
+      when(() => mockCart.state).thenReturn(const CartState(items: []));
+      when(() => mockCart.stream).thenAnswer((_) => Stream<CartState>.value(const CartState(items: [])));
+
 
       // Register fake socket service
       if (getIt.isRegistered<MockSocketService>()) {
@@ -165,8 +181,11 @@ void main() {
 
       await tester.pumpWidget(
         MaterialApp(
-          home: BlocProvider<AuthBloc>.value(
-            value: mockAuth,
+          home: MultiBlocProvider(
+            providers: [
+              BlocProvider<AuthBloc>.value(value: mockAuth),
+              BlocProvider<CartBloc>.value(value: mockCart),
+            ],
             child: LiveEventPage(eventId: 'evt_scheduled'),
           ),
         ),

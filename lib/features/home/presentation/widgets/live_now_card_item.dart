@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:test_flutter_bnj/core/utils/extensions.dart';
+import 'package:intl/intl.dart';
 import 'package:test_flutter_bnj/features/live_event/domain/entities/live_event.dart';
 
 class LiveNowCardItem extends StatelessWidget {
@@ -15,6 +15,12 @@ class LiveNowCardItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
+    final numberFormat = NumberFormat.decimalPattern();
+
+    final thumb = (event.thumbnailUrl?.isNotEmpty ?? false)
+        ? event.thumbnailUrl!
+        : null;
+
     return Column(
       children: [
         Expanded(
@@ -25,56 +31,48 @@ class LiveNowCardItem extends StatelessWidget {
               children: [
                 SizedBox.expand(
                   child: ClipRRect(
-                    borderRadius:
-                    BorderRadius.circular(12),
-                    child: Image.network(
-                      event.thumbnailUrl ?? '',
-                      errorBuilder:
-                          (
-                          context,
-                          error,
-                          stackTrace,
-                          ) => const Icon(
-                        LucideIcons.imageMinus,
-                      ),
-                      fit: BoxFit.cover,
-                    ),
+                    borderRadius: BorderRadius.circular(12),
+                    child: thumb != null
+                        ? Image.network(
+                            thumb,
+                            errorBuilder: (
+                              context,
+                              error,
+                              stackTrace,
+                            ) => const Icon(
+                              LucideIcons.imageMinus,
+                            ),
+                            fit: BoxFit.cover,
+                          )
+                        : Container(
+                            color: Colors.grey.shade200,
+                            child: const Center(
+                              child: Icon(
+                                LucideIcons.imageMinus,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
                   ),
                 ),
                 Positioned(
                   top: 8,
                   left: 8,
                   child: Container(
-                    padding:
-                    const EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                       horizontal: 4,
                       vertical: 2,
                     ),
                     decoration: BoxDecoration(
                       color: Colors.red,
-                      borderRadius:
-                      BorderRadius.circular(4),
+                      borderRadius: BorderRadius.circular(4),
                     ),
-                    child: Text("LIVE"),
-                  ),
-                ),
-                Positioned(
-                  bottom: 8,
-                  right: 8,
-                  child: Container(
-                    padding:
-                    const EdgeInsets.symmetric(
-                      horizontal: 4,
-                      vertical: 2,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white70,
-                      borderRadius:
-                      BorderRadius.circular(4),
-                    ),
-                    child: Text(
-                      event.startTime
-                          .toLiveEventTimeString(),
+                    child: const Text(
+                      "LIVE",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
@@ -82,15 +80,13 @@ class LiveNowCardItem extends StatelessWidget {
                   top: 8,
                   right: 8,
                   child: Container(
-                    padding:
-                    const EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                       horizontal: 4,
                       vertical: 2,
                     ),
                     decoration: BoxDecoration(
                       color: Colors.white70,
-                      borderRadius:
-                      BorderRadius.circular(4),
+                      borderRadius: BorderRadius.circular(4),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -102,7 +98,7 @@ class LiveNowCardItem extends StatelessWidget {
                         ),
                         const Gap(4),
                         Text(
-                          "${event.viewerCount}",
+                          numberFormat.format(event.viewerCount),
                         ),
                       ],
                     ),
@@ -133,20 +129,18 @@ class LiveNowCardItem extends StatelessWidget {
                   ),
                 ),
                 Row(
-                  mainAxisAlignment:
-                  MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Icon(
-                      LucideIcons.user,
+                      LucideIcons.store,
                       size: 16,
                       color: colorScheme.secondary,
                     ),
                     const Gap(4),
                     Flexible(
                       child: Text(
-                        event.seller.name,
-                        style: textTheme.bodyMedium
-                            ?.copyWith(
+                        event.seller.storeName,
+                        style: textTheme.bodyMedium?.copyWith(
                           color: colorScheme.secondary,
                         ),
                       ),
