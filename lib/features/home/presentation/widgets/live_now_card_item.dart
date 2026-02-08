@@ -1,7 +1,6 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:test_flutter_bnj/core/utils/extensions.dart';
 import 'package:test_flutter_bnj/features/live_event/domain/entities/live_event.dart';
 
@@ -36,7 +35,7 @@ class LiveNowCardItem extends StatelessWidget {
                           error,
                           stackTrace,
                           ) => const Icon(
-                        Icons.broken_image,
+                        LucideIcons.imageMinus,
                       ),
                       fit: BoxFit.cover,
                     ),
@@ -97,7 +96,7 @@ class LiveNowCardItem extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         const Icon(
-                          Icons.remove_red_eye,
+                          LucideIcons.eye,
                           size: 16,
                           color: Colors.grey,
                         ),
@@ -138,7 +137,7 @@ class LiveNowCardItem extends StatelessWidget {
                   MainAxisAlignment.start,
                   children: [
                     Icon(
-                      Icons.person,
+                      LucideIcons.user,
                       size: 16,
                       color: colorScheme.secondary,
                     ),

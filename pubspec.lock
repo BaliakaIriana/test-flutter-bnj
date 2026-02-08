@@ -342,6 +342,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.4"
+  flutter_number_flow:
+    dependency: "direct main"
+    description:
+      name: flutter_number_flow
+      sha256: "18a1a6248a891205acf27c551fd15982a1a224d5288e05358bf6bfff756e26b9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.0"
   flutter_svg:
     dependency: transitive
     description:
@@ -508,10 +516,10 @@ packages:
     dependency: "direct main"
     description:
       name: intl
-      sha256: "3df61194eb431efc39c4ceba583b95633a403f46c9fd341e550ce0bfa50e9aa5"
+      sha256: d6f56758b7d3014a48af9701c085700aac781a92a87a62b1333b46d8879661cf
       url: "https://pub.dev"
     source: hosted
-    version: "0.20.2"
+    version: "0.19.0"
   io:
     dependency: transitive
     description:

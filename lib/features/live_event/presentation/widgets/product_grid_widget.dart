@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:test_flutter_bnj/core/utils/extensions.dart';
 import 'package:test_flutter_bnj/features/live_event/domain/entities/product.dart';
+import 'package:test_flutter_bnj/widgets/common/app_button.dart';
 
 class ProductGridWidget extends StatelessWidget {
   final List<Product> products;
@@ -125,7 +128,7 @@ class _ProductCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        '${product.price.toStringAsFixed(2)}€',
+                        product.price.toPrice(),
                         style: const TextStyle(
                           decoration: TextDecoration.lineThrough,
                           color: Colors.grey,
@@ -134,7 +137,7 @@ class _ProductCard extends StatelessWidget {
                       ),
                     ] else
                       Text(
-                        '${product.price.toStringAsFixed(2)}€',
+                        product.price.toPrice(),
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: theme.colorScheme.primary,
@@ -145,7 +148,7 @@ class _ProductCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 Row(
                   children: [
-                    const Icon(Icons.star, color: Colors.amber, size: 14),
+                    const Icon(LucideIcons.star, color: Colors.amber, size: 14),
                     const SizedBox(width: 4),
                     Text(
                       product.rating.toString(),
@@ -165,7 +168,6 @@ class _ProductCard extends StatelessWidget {
           ),
           // Bouton Ajouter
           ElevatedButtonTheme(
-
             data: ElevatedButtonThemeData(
               style: ElevatedButton.styleFrom(
                 backgroundColor: product.stock > 0
@@ -182,13 +184,9 @@ class _ProductCard extends StatelessWidget {
               padding: const EdgeInsets.all(8),
               child: SizedBox(
                 width: double.infinity,
-                child: ElevatedButton.icon(
+                child: AppButton(
                   onPressed: product.stock > 0 ? () {} : null,
-                  icon: const Icon(Icons.add_shopping_cart, size: 16),
-                  label: Text(
-                    product.stock > 0 ? 'Ajouter' : 'Rupture',
-                    style: TextStyle(fontSize: 14, ),
-                  ),
+                  label: product.stock > 0 ? 'Ajouter' : 'Rupture',
                 ),
               ),
             ),

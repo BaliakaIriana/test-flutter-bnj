@@ -48,7 +48,7 @@ class MockSocketService {
 
     }, (event) {
 
-      _viewerCountTimer = Timer.periodic(Duration(seconds: 3), (timer) {
+      _viewerCountTimer = Timer.periodic(Duration(seconds: 7), (timer) {
         final baseViewers = event.viewerCount + 1;
         final fluctuation = Random().nextInt(50) - 25;
         _viewerCountController.add(baseViewers + fluctuation);

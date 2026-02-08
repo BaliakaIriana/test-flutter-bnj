@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:test_flutter_bnj/core/utils/responsive.dart';
 import 'package:test_flutter_bnj/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:test_flutter_bnj/features/home/presentation/widgets/home_page_live_now_carousel.dart';
 import 'package:test_flutter_bnj/features/home/presentation/widgets/home_page_recently_ended_lives.dart';
 import 'package:test_flutter_bnj/features/home/presentation/widgets/home_page_upcoming_lives.dart';
+import 'package:test_flutter_bnj/core/widgets/page_container.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -16,81 +19,90 @@ class HomePage extends StatelessWidget {
         title: const Text('Live Flow'),
         actions: [
           IconButton(
-              icon: const Icon(Icons.search),
+              icon: const Icon(LucideIcons.search),
               onPressed: () {}),
           IconButton(
-              icon: const Icon(Icons.shopping_cart),
+              icon: const Icon(LucideIcons.shoppingCart),
               onPressed: () {}),
           IconButton(
-              icon: const Icon(Icons.person),
+              icon: const Icon(LucideIcons.user),
               onPressed: () {}),
         ],
       ),
       body: SafeArea(
-        child: Center(
-          child: BlocBuilder<AuthBloc, AuthState>(
-            builder: (context, state) {
-              if(state is! Authenticated) {
-                return const Text('Veuillez vous connecter pour accéder au contenu en direct.');
-              }
-              return SingleChildScrollView(
-                child: SizedBox(
-                  width: MediaQuery
-                      .sizeOf(context)
-                      .width * 0.8,
+        child: SingleChildScrollView(
+          child: Center(
+            child: BlocBuilder<AuthBloc, AuthState>(
+              builder: (context, state) {
+                if(state is! Authenticated) {
+                  return const Text('Veuillez vous connecter pour accéder au contenu en direct.');
+                }
+                return PageContainer(
+                  padding: const EdgeInsets.symmetric(horizontal: 0),
+                  maxWidth: 1200,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Gap(24),
+                      const Gap(24),
                       const Text(
                         'Découvrez les dernières tendances en direct !',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight
-                            .bold),
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
-                      Gap(12),
+                      const Gap(12),
                       const Text(
                         'Explorez nos catégories de produits, suivez vos influenceurs préférés et profitez d\'offres exclusives en temps réel.',
                         textAlign: TextAlign.center,
                         style: TextStyle(fontSize: 16),
                       ),
-                      Gap(24),
-                      Flexible(
-                        child: HomePageLiveNowCarousel(),
+                      const Gap(24),
+                      const Flexible(child: HomePageLiveNowCarousel()),
+                      const Gap(32),
+                      Responsive(
+                        mobile: const _HomeSectionsMobile(),
+                        desktop: const _HomeSectionsDesktop(),
                       ),
-                      Gap(32),
-                      LayoutBuilder(
-                        builder: (context, constraints) {
-                          if (constraints.maxWidth > 900) {
-                            return const Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(child: HomePageRecentlyEndedLives()),
-                                Gap(32),
-                                Expanded(child: HomePageUpcomingLives()),
-                              ],
-                            );
-                          } else {
-                            return const Column(
-                              children: [
-                                HomePageRecentlyEndedLives(),
-                                Gap(32),
-                                HomePageUpcomingLives(),
-                              ],
-                            );
-                          }
-                        },
-                      ),
-                      Gap(24),
+                      const Gap(24),
                     ],
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class _HomeSectionsDesktop extends StatelessWidget {
+  const _HomeSectionsDesktop();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(child: HomePageRecentlyEndedLives()),
+        Gap(32),
+        Expanded(child: HomePageUpcomingLives()),
+      ],
+    );
+  }
+}
+
+class _HomeSectionsMobile extends StatelessWidget {
+  const _HomeSectionsMobile();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Column(
+      children: [
+        HomePageRecentlyEndedLives(),
+        Gap(32),
+        HomePageUpcomingLives(),
+      ],
     );
   }
 }

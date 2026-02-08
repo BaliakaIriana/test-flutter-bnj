@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:test_flutter_bnj/features/live_event/data/datasources/mock_socket_service.dart';
 import 'package:test_flutter_bnj/injection.dart';
 import 'package:video_player/video_player.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class VideoPlayerWidget extends StatefulWidget {
   final String? streamUrl;
@@ -61,7 +62,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
           left: 8,
           child: Row(
             children: [
-              Icon(Icons.live_tv, color: Colors.red, size: 16),
+              Icon(LucideIcons.tv, color: Colors.red, size: 16),
               Gap(4),
               Text(
                 'Live',
@@ -71,41 +72,6 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                 ),
               ),
             ],
-          ),
-        ),
-        // viewer count
-        Positioned(
-          top: 8,
-          right: 8,
-          child: StreamBuilder(
-            stream: getIt<MockSocketService>().viewerCount,
-            builder: (context, asyncSnapshot) {
-              if (asyncSnapshot.connectionState == ConnectionState.waiting ||
-                  asyncSnapshot.hasError ||
-                  hasNoViewers(asyncSnapshot)) {
-                return Container();
-              }
-              return Container(
-                decoration: BoxDecoration(
-                  color: Colors.black54,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                child: Row(
-                  children: [
-                    Icon(Icons.people, color: Colors.white, size: 16),
-                    Gap(4),
-                    Text(
-                      '${asyncSnapshot.data} viewers',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
           ),
         ),
       ],
